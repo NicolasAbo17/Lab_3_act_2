@@ -7,11 +7,20 @@ host_name  = socket.gethostname()
 host_ip = socket.gethostbyname(host_name)
 print('HOST IP:',host_ip)
 port = 10002
-
+BUF_LEN = 4096
 #Create socet here
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.bind((host_ip, port))
+soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+soc.bind((host_ip, port))
 #Get image size here
-length, addr = s.recvfrom(4)
-see = int.from_bytes(length,"little",signed=True)
-print("YUP",see)
+while True:
+    total_pack, addr = soc.recvfrom(4)
+    s=b""
+    total_pack = int.from_bytes(total_pack,"little",signed=True)
+    print(total_pack)
+    for i in range(total_pack):
+        data, addr = soc.recvfrom(BUF_LEN)
+        s += data
+        print(data)
+    frame = numpy.fromstring(s,dtype='uint8')
+    frame = cv2.imdecode(frame,0)
+    cv2.imshow('frame',frame)
