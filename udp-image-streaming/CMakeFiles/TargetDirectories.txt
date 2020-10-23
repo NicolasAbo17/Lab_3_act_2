@@ -1,0 +1,4 @@
+/home/aforozcog/Lab_3_act_2/udp-image-streaming/CMakeFiles/edit_cache.dir
+/home/aforozcog/Lab_3_act_2/udp-image-streaming/CMakeFiles/rebuild_cache.dir
+/home/aforozcog/Lab_3_act_2/udp-image-streaming/CMakeFiles/server.dir
+/home/aforozcog/Lab_3_act_2/udp-image-streaming/CMakeFiles/client.dir

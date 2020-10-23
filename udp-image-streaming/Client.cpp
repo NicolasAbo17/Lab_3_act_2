@@ -21,13 +21,14 @@
 #include "PracticalSocket.h"      // For UDPSocket and SocketException
 #include <iostream>               // For cout and cerr
 #include <cstdlib>                // For atoi()
-
+#include <chrono>
+#include <thread>
 using namespace std;
 
 #include "opencv2/opencv.hpp"
 using namespace cv;
 #include "config.h"
-
+#define BUF_LEN 65540
 
 int main(int argc, char * argv[]) {
     if ((argc < 3) || (argc > 3)) { // Test for correct number of arguments
@@ -39,13 +40,15 @@ int main(int argc, char * argv[]) {
     unsigned short servPort = Socket::resolveService(argv[2], "udp");
 
     try {
-        UDPSocket sock;
+        UDPSocket sock,sock2(10004);
         int jpegqual =  ENCODE_QUALITY; // Compression Parameter
-
+	char buffer[BUF_LEN];
+	int recvMsgSize;
+	string sourceAddress;
+	unsigned short sourcePort;
         Mat frame, send;
         vector < uchar > encoded;
-        VideoCapture cap(0); // Grab the camera
-        namedWindow("send", WINDOW_AUTOSIZE);
+        VideoCapture cap("car-detection.mp4"); // Grab the camera
         if (!cap.isOpened()) {
             cerr << "OpenCV Failed to open camera";
             exit(1);
@@ -54,22 +57,32 @@ int main(int argc, char * argv[]) {
         clock_t last_cycle = clock();
         while (1) {
             cap >> frame;
-            if(frame.size().width==0)continue;//simple integrity check; skip erroneous data...
+            if(frame.size().width==0)break;//simple integrity check; skip erroneous data...
             resize(frame, send, Size(FRAME_WIDTH, FRAME_HEIGHT), 0, 0, INTER_LINEAR);
             vector < int > compression_params;
             compression_params.push_back(IMWRITE_JPEG_QUALITY);
             compression_params.push_back(jpegqual);
 
             imencode(".jpg", send, encoded, compression_params);
-            imshow("send", send);
             int total_pack = 1 + (encoded.size() - 1) / PACK_SIZE;
 
             int ibuf[1];
             ibuf[0] = total_pack;
             sock.sendTo(ibuf, sizeof(int), servAddress, servPort);
-
-            for (int i = 0; i < total_pack; i++)
+	    int wut;
+	    cout << total_pack << "\n";
+	    //cin >> wut;
+	    /*do{
+			recvMsgSize = sock2.recvFrom(buffer,BUF_LEN,sourceAddress,sourcePort);
+	    }while(recvMsgSize > sizeof(int));*/
+	    this_thread::sleep_for(chrono::milliseconds(50));
+            for (int i = 0; i < total_pack; i++){
                 sock.sendTo( & encoded[i * PACK_SIZE], PACK_SIZE, servAddress, servPort);
+		/*do{
+            		recvMsgSize = sock2.recvFrom(buffer,BUF_LEN,sourceAddress,sourcePort);
+	    	  }while(recvMsgSize > sizeof(int));*/
+	        this_thread::sleep_for(chrono::milliseconds(50)); 
+	   }
 
             waitKey(FRAME_INTERVAL);
 
@@ -79,6 +92,7 @@ int main(int argc, char * argv[]) {
 
             cout << next_cycle - last_cycle;
             last_cycle = next_cycle;
+	    //cin >> wut;
         }
         // Destructor closes the socket
 
