@@ -68,21 +68,21 @@ int main(int argc, char * argv[]) {
 
             int ibuf[1];
             ibuf[0] = total_pack;
-            sock.sendTo(ibuf, sizeof(int), servAddress, servPort);
+            //sock.sendTo(ibuf, sizeof(int), servAddress, servPort);
 	    int wut;
 	    cout << total_pack << "\n";
 	    //cin >> wut;
 	    /*do{
 			recvMsgSize = sock2.recvFrom(buffer,BUF_LEN,sourceAddress,sourcePort);
 	    }while(recvMsgSize > sizeof(int));*/
-	    this_thread::sleep_for(chrono::milliseconds(50));
-            for (int i = 0; i < total_pack; i++){
-                sock.sendTo( & encoded[i * PACK_SIZE], PACK_SIZE, servAddress, servPort);
+	    //this_thread::sleep_for(chrono::milliseconds(50));
+            //for (int i = 0; i < total_pack; i++){
+                sock.sendTo( & encoded[0], PACK_SIZE, servAddress, servPort);
 		/*do{
             		recvMsgSize = sock2.recvFrom(buffer,BUF_LEN,sourceAddress,sourcePort);
 	    	  }while(recvMsgSize > sizeof(int));*/
 	        this_thread::sleep_for(chrono::milliseconds(50)); 
-	   }
+	   //}
 
             waitKey(FRAME_INTERVAL);
 
