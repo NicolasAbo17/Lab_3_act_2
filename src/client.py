@@ -5,8 +5,8 @@ import struct
 import sys
 
 
-multicast_group = '224.3.29.71'
-server_address = ('', 10000)
+multicast_group = '192.168.0.8'
+server_address = ('', 10001)
 
 # Create the datagram socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # socket.SOCK_DGRAM)
@@ -18,10 +18,7 @@ sock.bind(server_address)
 # the multicast group on all interfaces.
 group = socket.inet_aton(multicast_group)
 mreq = struct.pack('4sL', group, socket.INADDR_ANY)
-sock.setsockopt(
-    socket.IPPROTO_IP,
-    socket.IP_ADD_MEMBERSHIP,
-    mreq)
+sock.setsockopt(socket.IPPROTO_IP,socket.IP_ADD_MEMBERSHIP,mreq)
 
 # Receive/respond loop
 while True:

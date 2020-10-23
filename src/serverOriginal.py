@@ -7,9 +7,9 @@ if camera == True:
 else:
 	vid = cv2.VideoCapture('../videos/guiltygear.mp4')
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-host_ip = '157.253.92.26' # Here according to your server ip write the address
+host_ip = '169.254.194.9' # Here according to your server ip write the address
 
-port = 9999
+port = 10002
 client_socket.connect((host_ip,port))
 
 if client_socket: 
