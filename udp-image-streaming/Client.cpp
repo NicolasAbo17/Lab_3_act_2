@@ -32,7 +32,7 @@ using namespace cv;
 
 
 void videoStreaming(unsigned short servPort, string servAddress,string movie, unsigned char multicastTTL){
-	cout << movie << "\n";a
+	cout << movie << "\n";
 	try {
 		UDPSocket sock;
 		sock.setMulticastTTL(multicastTTL);
@@ -81,16 +81,17 @@ void videoStreaming(unsigned short servPort, string servAddress,string movie, un
 //Main function
 int main(int argc, char * argv[]) {
 	
-	int films = atoi(argv[1]);
+	int films = atoi(argv[2]);
+	string servAddress = argv[1];	
+
+	string movies[] = {"car-detection.mp4","bolt-detection.mp4"};
 	
-	string movies[] = {"car-detection.mp4"};
-	
-	int ports[] = {10020};
+	unsigned int ports[] = {10020,10021};
 	
 	vector<thread> threads;
 	
-	for(int i = 0; i < films;++i){
-		threads.push_back(thread(videoStreaming,ports[i],movies[i]));
+	for(int i = 1; i <= films;++i){
+		threads.push_back(thread(videoStreaming,ports[i],servAddress,movies[i],2));
 	}
 	for(auto &th : threads)
 		th.join();
