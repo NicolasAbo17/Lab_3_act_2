@@ -58,8 +58,12 @@ void videoStreaming(unsigned short servPort, string servAddress,string movie, un
 
 				imencode(".jpg", send, encoded, compression_params);
 				int total_pack = 1 + (encoded.size() - 1) / PACK_SIZE;
-			   
+			   	if(total_pack > 1){
+					cout << "BIGGEEEEEEEERR THAN ONE " << encoded.size() <<"\n";
+				}
+				cout << total_pack << " " << servAddress << " " << servPort << "\n";
 				sock.sendTo( & encoded[0], PACK_SIZE, servAddress, servPort);
+				
 				waitKey(FRAME_INTERVAL);
 				clock_t next_cycle = clock();
 				double duration = (next_cycle - last_cycle) / (double) CLOCKS_PER_SEC;
@@ -72,7 +76,7 @@ void videoStreaming(unsigned short servPort, string servAddress,string movie, un
 		}
 
 	} catch (SocketException & e) {
-		cerr << e.what() << endl;
+		cerr << "yup? "<<e.what() << endl;
 		exit(1);
 	}
 }
@@ -83,9 +87,9 @@ int main(int argc, char * argv[]) {
 	
 	int films = atoi(argv[1]);
 
-	string movies[] = {"car-detection.mp4","bolt-detection.mp4"};
+	string movies[] = {"car-detection.mp4","people-detection.mp4"};
 	
-	unsigned int ports[] = {10020,10021};
+	unsigned int ports[] = {10028,10021};
 	
 	string addresses[] = {"224.0.0.0","224.0.0.1"};
 
