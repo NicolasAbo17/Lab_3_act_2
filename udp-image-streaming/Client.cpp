@@ -90,7 +90,7 @@ int main(int argc, char * argv[]) {
 	
 	vector<thread> threads;
 	
-	for(int i = 1; i <= films;++i){
+	for(int i = 0; i < films;++i){
 		threads.push_back(thread(videoStreaming,ports[i],servAddress,movies[i],2));
 	}
 	for(auto &th : threads)
