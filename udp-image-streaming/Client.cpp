@@ -32,7 +32,7 @@ using namespace cv;
 
 
 void videoStreaming(unsigned short servPort, string servAddress,string movie, unsigned char multicastTTL){
-	cout << movie << "\n";a
+	cout << movie << "\n";
 	try {
 		UDPSocket sock;
 		sock.setMulticastTTL(multicastTTL);
@@ -63,7 +63,7 @@ void videoStreaming(unsigned short servPort, string servAddress,string movie, un
 				waitKey(FRAME_INTERVAL);
 				clock_t next_cycle = clock();
 				double duration = (next_cycle - last_cycle) / (double) CLOCKS_PER_SEC;
-				cout << "\teffective FPS:" << (1 / duration) << " \tkbps:" << (PACK_SIZE * total_pack / duration / 1024 * 8) << endl;
+				cout << movie << "\teffective FPS:" << (1 / duration) << " \tkbps:" << (PACK_SIZE * total_pack / duration / 1024 * 8) << endl;
 
 				cout << next_cycle - last_cycle;
 				last_cycle = next_cycle;
@@ -82,15 +82,17 @@ void videoStreaming(unsigned short servPort, string servAddress,string movie, un
 int main(int argc, char * argv[]) {
 	
 	int films = atoi(argv[1]);
+
+	string movies[] = {"car-detection.mp4","bolt-detection.mp4"};
 	
-	string movies[] = {"car-detection.mp4"};
+	unsigned int ports[] = {10020,10021};
 	
-	int ports[] = {10020};
-	
+	string addresses[] = {"224.0.0.0","224.0.0.1"};
+
 	vector<thread> threads;
 	
 	for(int i = 0; i < films;++i){
-		threads.push_back(thread(videoStreaming,ports[i],movies[i]));
+		threads.push_back(thread(videoStreaming,ports[i],addresses[i],movies[i],1));
 	}
 	for(auto &th : threads)
 		th.join();
