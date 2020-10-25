@@ -32,7 +32,7 @@ using namespace cv;
 
 
 void videoStreaming(unsigned short servPort, string servAddress,string movie, unsigned char multicastTTL){
-	cout << movie << "\n";
+	cout << movie << "\n";a
 	try {
 		UDPSocket sock;
 		sock.setMulticastTTL(multicastTTL);
