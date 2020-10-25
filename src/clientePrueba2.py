@@ -24,7 +24,7 @@ for i in range(0, NUMBERVIDEOS ):
 #server_port = input("Please write the port number of the server")
 for i in range(0, NUMBERVIDEOS ):
     layout =  [[sg.Button('Video' + str(i), key=i)]]
-number = input("Please write the video number(1 or 2)")
+number = int(input("Please write the video number(1 or 2)"))
 multicast_group = addresses[number]
 server = ('',int(ports[number]))
 
