@@ -20,11 +20,32 @@ for i in range(0, NUMBERVIDEOS ):
     addresses[i] = mylist[i+1]
     ports[i] = mylist[i+3]       
 
+#default
+number = 0
+
 #multicast_group = input("please write the multicast_group ip")
 #server_port = input("Please write the port number of the server")
+<<<<<<< HEAD
+sg.theme('DarkAmber')    # Keep things interesting for your users
+
+layout = [[sg.Button('Video' + str(1), key='1')],      
+          [sg.Button('Video' + str(2), key='2')]]      
+
+window = sg.Window('Choose video', layout)      
+
+while True:                             # The Event Loop
+    event, values = window.read() 
+    print(event, values)       
+    number = int(event)
+        break      
+
+window.close()    
+
+=======
 for i in range(0, NUMBERVIDEOS ):
     layout =  [[sg.Button('Video' + str(i), key=i)]]
-number = input("Please write the video number(1 or 2)")
+number = int(input("Please write the video number(1 or 2)"))
+>>>>>>> main
 multicast_group = addresses[number]
 server = ('',int(ports[number]))
 
