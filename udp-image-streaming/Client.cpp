@@ -91,12 +91,12 @@ int main(int argc, char * argv[]) {
 	
 	unsigned int ports[] = {10028,10021};
 	
-	string addresses[] = {"224.0.0.0","224.0.0.1"};
+	string addresses[] = {"224.0.0.50","224.0.0.1"};
 
 	vector<thread> threads;
 	
 	for(int i = 0; i < films;++i){
-		threads.push_back(thread(videoStreaming,ports[i],addresses[i],movies[i],1));
+		threads.push_back(thread(videoStreaming,ports[i],addresses[i],movies[i],3));
 	}
 	for(auto &th : threads)
 		th.join();
