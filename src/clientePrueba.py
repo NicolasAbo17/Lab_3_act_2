@@ -2,27 +2,27 @@ import socket
 import cv2
 import numpy
 import time
+import struct
 
-host_name  = socket.gethostname()
-host_ip = socket.gethostbyname(host_name)
-print('HOST IP:',host_ip)
-port = 10002
-BUF_LEN = 7700
-#Create socet here
-soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-soc.bind((host_ip, port))
-cont = 0
-#Get image size here
-l = 'a'
+MCAST_GRP = input("ip number of the group ")
+MCAST_PORT = int(input("port number of the group "))
+IS_ALL_GROUPS = True
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+if IS_ALL_GROUPS:
+    # on this port, receives ALL multicast groups
+    sock.bind(('', MCAST_PORT))
+else:
+    # on this port, listen ONLY to MCAST_GRP
+    sock.bind((MCAST_GRP, MCAST_PORT))
+mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
+BUF_LEN = 12000
+sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+
 while True:
-    cont = cont +1
-    #total_pack, addr = soc.recvfrom(4)
     s=b""
-    #soc.sendto(l.encode('ascii'),(addr[0],10004))
-    #total_pack = int.from_bytes(total_pack,"little",signed=True)
-    #print(total_pack)
-    #for i in range(total_pack):
-    data, addr = soc.recvfrom(BUF_LEN)
+    data, addr = sock.recvfrom(BUF_LEN)
         #soc.sendto(l.encode('ascii'),(addr[0],10004))
     s += data
     frame = numpy.fromstring(s,dtype='uint8')
