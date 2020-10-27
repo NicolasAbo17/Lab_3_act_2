@@ -87,11 +87,11 @@ int main(int argc, char * argv[]) {
 	
 	int films = atoi(argv[1]);
 
-	string movies[] = {"car-detection.mp4","people-detection.mp4"};
+	string movies[] = {"car-detection.mp4","people-detection.mp4","bottle-detection.mp4"};
 	
-	unsigned int ports[] = {10028,10021};
+	unsigned int ports[] = {10021,10022,10023};
 	
-	string addresses[] = {"224.0.0.50","224.0.0.1"};
+	string addresses[] = {"224.0.0.50","224.0.0.51","224.0.0.53"};
 
 	vector<thread> threads;
 	
