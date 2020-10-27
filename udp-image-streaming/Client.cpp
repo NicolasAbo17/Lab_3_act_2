@@ -96,7 +96,7 @@ int main(int argc, char * argv[]) {
 	vector<thread> threads;
 	
 	for(int i = 0; i < films;++i){
-		threads.push_back(thread(videoStreaming,ports[i],addresses[i],movies[i],3));
+		threads.push_back(thread(videoStreaming,ports[i],addresses[i],movies[i],1));
 	}
 	for(auto &th : threads)
 		th.join();
